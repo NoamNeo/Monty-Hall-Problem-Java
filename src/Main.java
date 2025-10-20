@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
+
 public class Main {
     static boolean[] localPremio() {
         boolean[] seed = new boolean[0];
@@ -15,34 +16,26 @@ public class Main {
         return seed;
     }
 
-    static void estadoPartida(boolean estado) {
-        if (estado) {
-            System.out.println("El jugador ganó");
-        } else {
-            System.out.println("El jugador perdió");
-        }
-    }
-
-    static int funcPuertaJugador(int puerJugador, int puerPresentador){
-        switch (puerJugador){
+    static int funcPuertaJugador(int puerJugador, int puerPresentador) {
+        switch (puerJugador) {
             case 0:
-                if(puerPresentador == 1){
+                if (puerPresentador == 1) {
                     puerJugador = 2;
-                }else{
+                } else {
                     puerJugador = 1;
                 }
                 break;
             case 1:
-                if(puerPresentador == 2){
+                if (puerPresentador == 2) {
                     puerJugador = 0;
-                }else{
+                } else {
                     puerJugador = 2;
                 }
                 break;
             case 2:
-                if(puerPresentador == 0){
+                if (puerPresentador == 0) {
                     puerJugador = 1;
-                }else{
+                } else {
                     puerJugador = 0;
                 }
                 break;
@@ -51,7 +44,8 @@ public class Main {
         }
         return puerJugador;
     }
-    static int funcPuertaPresentador(int randInt, int puertaJugador , boolean[] resultados) {
+
+    static int funcPuertaPresentador(int randInt, int puertaJugador, boolean[] resultados) {
         int puerta = 0;
         switch (puertaJugador) {
             case 0:
@@ -91,7 +85,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int decisionJugador, decisionCambio,puertaPresentador, contador=0, victoria=0, numTest;
+        int decisionJugador, decisionCambio, puertaPresentador, contador = 0, victoria = 0, numTest;
         boolean cambioJugador;
         double porcentaje;
         //Creamos las clases de las puertas para el problema
@@ -121,13 +115,13 @@ public class Main {
                 decisionJugador = funcPuertaJugador(decisionJugador, puertaPresentador);
             }
 
-            if(puertas[decisionJugador]){
-                victoria = victoria +1;
+            if (puertas[decisionJugador]) {
+                victoria = victoria + 1;
             }
             contador = contador + 1;
         }
-        System.out.println("De "+contador+" partidas se ganaron "+ victoria + " veces");
+        System.out.println("De " + contador + " partidas se ganaron " + victoria + " veces");
         porcentaje = (double) victoria * 100 / (double) contador;
-        System.out.println("El porcentaje es de "+porcentaje + " de cada 100");
+        System.out.println("El porcentaje es de " + porcentaje + " de cada 100");
     }
 }
