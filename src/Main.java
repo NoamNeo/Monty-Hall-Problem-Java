@@ -15,16 +15,11 @@ public class Main {
         return seed;
     }
 
-    static void estadoPartida(boolean estado, boolean cambio) {
+    static void estadoPartida(boolean estado) {
         if (estado) {
             System.out.println("El jugador ganó");
         } else {
             System.out.println("El jugador perdió");
-        }
-        if (cambio) {
-            System.out.println("Hubo cambio de puerta");
-        } else {
-            System.out.println("No hubo cambio de puerta");
         }
     }
 
@@ -96,35 +91,43 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int decisionJugador, decisionCambio;
+        int decisionJugador, decisionCambio,puertaPresentador, contador=0, victoria=0, numTest;
         boolean cambioJugador;
-        int puertaPresentador;
+        double porcentaje;
         //Creamos las clases de las puertas para el problema
         boolean puerta0 = false;
         boolean puerta1 = false;
         boolean puerta2 = false;
+        Scanner usrInput = new Scanner(System.in);
+        System.out.println("Escribe la cantidad de veces que quieres simular el Monty Hall problem");
+        numTest = usrInput.nextInt();
+        System.out.println("Escribe 0 para no cambiar y 1 para cambiar siempre");
+        decisionCambio = usrInput.nextInt();
+        for (int i = 0; i < numTest; i++) {
+            boolean[] estado = localPremio(); //Iniciar un nuevo etado de las puertas
+            puerta0 = estado[0];
+            puerta1 = estado[1];
+            puerta2 = estado[2];
+            boolean[] puertas = {puerta0, puerta1, puerta2};
+            decisionJugador = (int) (Math.random() * 3);
 
-        boolean[] estado = localPremio(); //Iniciar un nuevo etado de las puertas
-        puerta0 = estado[0];
-        puerta1 = estado[1];
-        puerta2 = estado[2];
-        boolean[] puertas = {puerta0, puerta1, puerta2};
-        decisionJugador = (int) (Math.random() * 3);
+            //Puerta del presentador
+            puertaPresentador = funcPuertaPresentador((int) (Math.random() * 3), decisionJugador, puertas);
+            //Poner sí el jugador quiere cambiar de puerta
+            if (decisionCambio == 0) {
+                cambioJugador = false;
+            } else {
+                cambioJugador = true;
+                decisionJugador = funcPuertaJugador(decisionJugador, puertaPresentador);
+            }
 
-        //Puerta del presentador
-        puertaPresentador = funcPuertaPresentador((int) (Math.random() * 3), decisionJugador, puertas);
-        //Poner sí el jugador quiere cambiar de puerta
-        decisionCambio = (int) (Math.random() * 2);
-        decisionCambio = 1;
-        if (decisionCambio == 0) {
-            cambioJugador = false;
-        } else {
-            cambioJugador = true;
-            decisionJugador = funcPuertaJugador(decisionJugador, puertaPresentador);
+            if(puertas[decisionJugador]){
+                victoria = victoria +1;
+            }
+            contador = contador + 1;
         }
-
-        estadoPartida(puertas[decisionJugador], cambioJugador);
-
-
+        System.out.println("De "+contador+" partidas se ganaron "+ victoria + " veces");
+        porcentaje = (double) victoria * 100 / (double) contador;
+        System.out.println("El porcentaje es de "+porcentaje + " de cada 100");
     }
 }
