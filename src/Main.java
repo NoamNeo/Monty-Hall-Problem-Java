@@ -17,32 +17,13 @@ public class Main {
     }
 
     static int funcPuertaJugador(int puerJugador, int puerPresentador) {
-        switch (puerJugador) {
-            case 0:
-                if (puerPresentador == 1) {
-                    puerJugador = 2;
-                } else {
-                    puerJugador = 1;
-                }
-                break;
-            case 1:
-                if (puerPresentador == 2) {
-                    puerJugador = 0;
-                } else {
-                    puerJugador = 2;
-                }
-                break;
-            case 2:
-                if (puerPresentador == 0) {
-                    puerJugador = 1;
-                } else {
-                    puerJugador = 0;
-                }
-                break;
-            default:
-                System.out.println("Ponte a llorar que se ha roto");
+        int resultado = 0;
+        for(int i = 0; i < 3 ; i++) {
+            if( i != puerJugador && i != puerPresentador) {
+                resultado = i;
+            }
         }
-        return puerJugador;
+        return resultado;
     }
 
     static int funcPuertaPresentador(int randInt, int puertaJugador, boolean[] resultados) {
@@ -108,10 +89,7 @@ public class Main {
             //Puerta del presentador
             puertaPresentador = funcPuertaPresentador((int) (Math.random() * 3), decisionJugador, puertas);
             //Poner sí el jugador quiere cambiar de puerta
-            if (decisionCambio == 0) {
-                cambioJugador = false;
-            } else {
-                cambioJugador = true;
+            if (decisionCambio == 1) {
                 decisionJugador = funcPuertaJugador(decisionJugador, puertaPresentador);
             }
 
