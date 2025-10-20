@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Random;
 public class Main {
     static boolean[] localPremio(){
@@ -13,19 +14,28 @@ public class Main {
         }
         return seed;
     }
+    static void estadoPartida(boolean estado){
+        if(estado){
+            System.out.println("El jugador ganó");
+        }else {
+            System.out.println("El jugador perdió");
+        }
+    }
     public static void main(String[] args){
-        Puerta puerta0 = new Puerta();
-        Puerta puerta1 = new Puerta();
-        Puerta puerta2 = new Puerta();
-        Puerta[] puertas = new Puerta[]{puerta0, puerta1, puerta2};
+        int decisionJugador;
+        //Creamos las clases de las puertas para el problema
+        boolean puerta0 = false;
+        boolean puerta1 = false;
+        boolean puerta2 = false;
+        boolean[] puertas = {puerta0, puerta1, puerta2};
 
         boolean[] estado = localPremio(); //Iniciar un nuevo etado de las puertas
-        puerta0.premio = estado[0];
-        puerta1.premio = estado[1];
-        puerta2.premio = estado[2];
-        
-        for(int i = 0; i < puertas.length; i++){
-            System.out.println("Premio detrás de puerta "+i+":"+ puertas[i].premio);
-        }
+        puerta0= estado[0];
+        puerta1= estado[1];
+        puerta2= estado[2];
+
+        decisionJugador = (int) (Math.random()*3);
+
+        estadoPartida(puertas[decisionJugador]);
     }
 }
