@@ -1,11 +1,11 @@
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
 
 public class Main {
     static boolean[] localPremio() {
         boolean[] seed = new boolean[0];
-        int randValue = (int) (Math.random() * 3);
+        Random rand = new Random();
+        int randValue = (rand.nextInt(3));
         if (randValue == 0) {
             seed = new boolean[]{false, false, true};
         } else if (randValue == 1) {
@@ -16,21 +16,12 @@ public class Main {
         return seed;
     }
 
-    static int funcPuertaJugador(int puerJugador, int puerPresentador) {
-        int resultado = 0;
-        for(int i = 0; i < 3 ; i++) {
-            if( i != puerJugador && i != puerPresentador) {
-                resultado = i;
-            }
-        }
-        return resultado;
-    }
-
-    static int funcPuertaPresentador(int randInt, int puertaJugador, boolean[] resultados) {
+    static int funcPuertaPresentador(int puertaJugador, boolean[] resultados) {
         int puerta = 0;
+        Random  rand = new Random();
         switch (puertaJugador) {
             case 0:
-                puerta = (int) (Math.random() * 2) + 1;
+                puerta = rand.nextInt(2) + 1;
                 if (resultados[puerta]) {
                     if (puerta == 1) {
                         puerta = 2;
@@ -40,7 +31,7 @@ public class Main {
                 }
                 break;
             case 1:
-                puerta = (int) (Math.random() * 2) * 2;
+                puerta = rand.nextInt(2) * 2;
                 if (resultados[puerta]) {
                     if (puerta == 2) {
                         puerta = 0;
@@ -50,7 +41,7 @@ public class Main {
                 }
                 break;
             case 2:
-                puerta = (int) (Math.random() * 2);
+                puerta = rand.nextInt(2);
                 if (resultados[puerta]) {
                     if (puerta == 0) {
                         puerta = 1;
@@ -69,28 +60,34 @@ public class Main {
         int decisionJugador, decisionCambio, puertaPresentador, contador = 0, victoria = 0, numTest;
         boolean cambioJugador;
         double porcentaje;
+        Scanner usrInput = new Scanner(System.in);
+        Random rand = new Random();
         //Creamos las clases de las puertas para el problema
         boolean puerta0 = false;
         boolean puerta1 = false;
         boolean puerta2 = false;
-        Scanner usrInput = new Scanner(System.in);
         System.out.println("Escribe la cantidad de veces que quieres simular el Monty Hall problem");
         numTest = usrInput.nextInt();
         System.out.println("Escribe 0 para no cambiar y 1 para cambiar siempre");
         decisionCambio = usrInput.nextInt();
+        if (decisionCambio == 0) {
+            cambioJugador = false;
+        }else{
+            cambioJugador = true;
+        }
         for (int i = 0; i < numTest; i++) {
             boolean[] estado = localPremio(); //Iniciar un nuevo etado de las puertas
             puerta0 = estado[0];
             puerta1 = estado[1];
             puerta2 = estado[2];
             boolean[] puertas = {puerta0, puerta1, puerta2};
-            decisionJugador = (int) (Math.random() * 3);
+            decisionJugador = rand.nextInt(3);
 
             //Puerta del presentador
-            puertaPresentador = funcPuertaPresentador((int) (Math.random() * 3), decisionJugador, puertas);
+            puertaPresentador = funcPuertaPresentador(decisionJugador, puertas);
             //Poner sí el jugador quiere cambiar de puerta
-            if (decisionCambio == 1) {
-                decisionJugador = funcPuertaJugador(decisionJugador, puertaPresentador);
+            if (cambioJugador) {
+                decisionJugador = 3 - puertaPresentador - decisionJugador; //Nos da el índice del array de la puerta que no escogimos ni que escogio el presentador
             }
 
             if (puertas[decisionJugador]) {
